@@ -10,8 +10,8 @@ find_package(Vulkan REQUIRED)
 
 add_subdirectory(third_party)
 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build")
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build")
 
 add_subdirectory(src)
 
@@ -31,14 +31,17 @@ foreach(GLSL ${GLSL_SOURCE_FILES})
   get_filename_component(FILE_NAME ${GLSL} NAME)
   set(SPIRV "${PROJECT_SOURCE_DIR}/shaders/${FILE_NAME}.spv")
   message(STATUS ${GLSL})
+  message(STATUS "${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}")
   add_custom_command(
-    OUTPUT ${SPIRV}
     COMMAND ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}
-    DEPENDS ${GLSL})
-  list(APPEND SPIRV_BINARY_FILES ${SPIRV})
+    OUTPUT ${SPIRV}
+    DEPENDS ${GLSL}
+    COMMENT "Compiling ${GLSL} to ${SPIRV}"
+    )
+  list(APPEND SPIRV_BINARY_FILES "${SPIRV}")
 endforeach(GLSL)
-
+message (STATUS ${SPIRV_BINARY_FILES})
 add_custom_target(
     Shaders 
-    DEPENDS ${SPIRV_BINARY_FILES}
+    ALL DEPENDS ${SPIRV_BINARY_FILES}
     )
