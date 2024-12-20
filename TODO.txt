@@ -1,0 +1,17 @@
+Bring logic from AlienGLRenderer to alienVKRenderer
+Indirect Draws 
+(with instancing)
+Post-processing
+Culling
+    - frustum Culling
+Loading textures
+Loading GLTF
+Loading scenes
+Debug volumes/meshes
+Particle systems
+Depth of field
+Lighting
+    - Forward rendering
+    - Deferred shading
+    - Global Illumination
+Physically Based Rendering
